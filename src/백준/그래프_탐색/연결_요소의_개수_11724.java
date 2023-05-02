@@ -7,7 +7,7 @@ class 연결_요소의_개수_11724 {
     static int[][] adjArray;
     static boolean[] checked;
 
-    public static void mai(String[] args) throws IOException{
+    public static void solution() throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int[] NM = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
         adjArray = new int[NM[0] + 1][NM[0] + 1];
