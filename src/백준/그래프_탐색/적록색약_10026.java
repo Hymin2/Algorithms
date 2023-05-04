@@ -4,7 +4,7 @@ import java.util.*;
 import java.io.*;
 
 public class 적록색약_10026 {
-    public static void main(String[] args) throws IOException{
+    public static void solution() throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
         String[][] map = new String[N][N];

@@ -4,7 +4,7 @@ import java.util.*;
 import java.io.*;
 
 public class 시험_성적_9498 {
-    public static void main(String[] args) throws IOException{
+    public static void solution() throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int num = Integer.parseInt(br.readLine());
         if(num >= 90) System.out.println("A");

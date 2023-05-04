@@ -7,7 +7,7 @@ public class 토마토_7569 {
     static int[][][] tomatoes;
     static int[][][] days;
 
-    public static void main(String[] args) throws IOException{
+    public static void solution() throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int[] MNK = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
         tomatoes = new int[MNK[2]][MNK[1]][MNK[0]];
