@@ -5,53 +5,40 @@ import java.io.*;
 
 public class 경로_찾기_11403 {
     static int N;
-    static char[][] adjArray;
+    static int[][] adjArray;
     static boolean[] checked;
     static List<Integer> list = new ArrayList<>();
     static int[][] result;
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         N = Integer.parseInt(br.readLine());
-        adjArray = new char[N][N];
+        adjArray = new int[N][N];
         result = new int[N][N];
 
-        for(int i = 0; i <N; i++)
-            adjArray[i] = br.readLine().replace(" ", "").toCharArray();
+        for (int i = 0; i < N; i++)
+            adjArray[i] = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
 
-        DFS();
+        transitive_closure();
 
-        for(int i = 0; i < N; i++){
-            for(int k = 0; k < N; k++)
-                System.out.print(result[i][k] + " ");
+        for(int i = 0; i < adjArray.length; i++){
+            for(int k = 0; k < adjArray.length; k++)
+                System.out.print(adjArray[i][k] + " ");
             System.out.println();
         }
     }
 
-    public static void DFS(){
-        checked = new boolean[N];
+    public static void transitive_closure(){
+        int n = adjArray.length;
 
-        for(int i = 0; i < N; i++){
-            if(!checked[i]){
-                DFS_visit(i);
-
-                for(int j = 0; j < list.size(); j++){
-                    for(int k = 0; k < list.size(); k++){
-                        result[list.get(j)][list.get(k)] = 1;
-                    }
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                for(int k = 0; k < n; k++){
+                    // adjArray[j][k] = Math.min(adjArray[j][k], adjArray[j][i] + adjArray[i][k]);
+                    // -> 최단 거리 구하기 (floyd-warshall)
+                    adjArray[j][k] = adjArray[j][k] | (adjArray[j][i] & adjArray[i][k]);
                 }
-
-            }
-        }
-    }
-
-    public static void DFS_visit(int v){
-        checked[v] = true;
-
-        for(int i = 0; i < N; i++){
-            if(adjArray[v][i] == '1' && !checked[i]){
-                DFS_visit(i);
             }
         }
     }
