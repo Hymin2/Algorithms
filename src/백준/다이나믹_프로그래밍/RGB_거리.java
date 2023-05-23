@@ -17,6 +17,4 @@ public class RGB_거리 {
 
 
     }
-
-    public static int dp()
 }
