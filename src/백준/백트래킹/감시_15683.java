@@ -58,6 +58,11 @@ public class 감시_15683 {
         if(depth == cctvNum){
             int blindSpot = getBlindSpot();
 
+            for(int i = 0; i < N; i++){
+                for(int k = 0; k < M; k++)
+                    visited[i][k] = false;
+            }
+
             min = blindSpot < 0 ? min : Math.min(blindSpot, min);
 
             return;
@@ -74,30 +79,31 @@ public class 감시_15683 {
         int nonBlindSpot = 0;
 
         for(int i = 0; i < cctvNum; i++){
-            nonBlindSpot += DFS_visit(cctvArray[i].x, cctvArray[i].y, cctvArray[i].type, cctvArray[i].direction, 0);
-        }
+            for(int k = 0; k < cctvType[cctvArray[i].type][cctvArray[i].direction].length; k++){
+                int x = cctvArray[i].x;
+                int y = cctvArray[i].y;
 
-        return M * N - nonBlindSpot - cctvNum - wallNum;
-    }
+                while(true) {
+                    x += dx[cctvType[cctvArray[i].type][cctvArray[i].direction][k]];
+                    y += dy[cctvType[cctvArray[i].type][cctvArray[i].direction][k]];
 
-    public static int DFS_visit(int x, int y, int type, int direction, int nonBlindSpot){
-        for(int i = 0; i < cctvType[type][direction].length; i++){
-            int nx = x + dx[cctvType[type][direction][i]];
-            int ny = y + dy[cctvType[type][direction][i]];
-
-            if(nx == N || nx == -1 || ny == M || ny == -1 || map[nx][ny] == 6) continue;
-
-            if(map[nx][ny] == 0 && !visited[nx][ny]) {
-                visited[x][y] = true;
-
-                System.out.printf("%d, %d\n",nx, ny);
-                nonBlindSpot = DFS_visit(nx, ny, type, direction, nonBlindSpot + 1);
+                    if (x == -1 || x == N || y == -1 || y == M || map[x][y] == 6) break;
+                    if(!visited[x][y] && map[x][y] == 0) {
+                        nonBlindSpot++;
+                        visited[x][y] = true;
+                    }
+                }
             }
         }
 
-        return nonBlindSpot;
+        for(int i = 0; i < N; i++){
+            for(int k = 0; k < M; k++)
+                System.out.print(visited[i][k] + " ");
+            System.out.println();
+        }
+        System.out.println();
+        return M * N - nonBlindSpot - wallNum - cctvNum;
     }
-
     public static class Cctv{
         int x;
         int y;
