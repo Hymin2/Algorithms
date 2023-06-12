@@ -23,6 +23,8 @@ public class 감시_15683 {
     static int[][][] cctvType = {{}, {{0}, {1}, {2}, {3}}, {{0, 1}, {2, 3}}, {{0, 3}, {3, 1}, {1, 2}, {2, 0}}, {{0, 1, 2}, {0, 1, 3}, {0, 2, 3}, {1, 2, 3}}, {{0, 1, 2, 3}}};
     static int[][] map;
     static boolean[][] visited;
+    static int[][] distance;
+    static int distanceMax;
     static Cctv[] cctvArray = new Cctv[8];
     static int cctvNum = 0;
     static int wallNum = 0;
@@ -38,6 +40,7 @@ public class 감시_15683 {
 
         map = new int[N][M];
         visited = new boolean[N][M];
+        distance = new int[N][M];
 
         for(int i = 0; i < N; i++){
             st = new StringTokenizer(br.readLine(), " ");
@@ -56,6 +59,14 @@ public class 감시_15683 {
 
     public static void backtracking(int depth){
         if(depth == cctvNum){
+            for(int i = 0; i < N; i++){
+                for(int k = 0; k < M; k++) {
+                    distance[i][k] = 0;
+                    visited[i][k] = false;
+                }
+            }
+            distanceMax = 0;
+
             int blindSpot = getBlindSpot();
 
             min = blindSpot < 0 ? min : Math.min(blindSpot, min);
@@ -71,16 +82,13 @@ public class 감시_15683 {
     }
 
     public static int getBlindSpot(){
-        int nonBlindSpot = 0;
+        for(int i = 0; i < cctvNum; i++)
+            DFS_visit(cctvArray[i].x, cctvArray[i].y, cctvArray[i].type, cctvArray[i].direction);
 
-        for(int i = 0; i < cctvNum; i++){
-            nonBlindSpot += DFS_visit(cctvArray[i].x, cctvArray[i].y, cctvArray[i].type, cctvArray[i].direction, 0);
-        }
-
-        return M * N - nonBlindSpot - cctvNum - wallNum;
+        return M * N - distanceMax - cctvNum - wallNum;
     }
 
-    public static int DFS_visit(int x, int y, int type, int direction, int nonBlindSpot){
+    public static void DFS_visit(int x, int y, int type, int direction){
         for(int i = 0; i < cctvType[type][direction].length; i++){
             int nx = x + dx[cctvType[type][direction][i]];
             int ny = y + dy[cctvType[type][direction][i]];
@@ -88,14 +96,11 @@ public class 감시_15683 {
             if(nx == N || nx == -1 || ny == M || ny == -1 || map[nx][ny] == 6) continue;
 
             if(map[nx][ny] == 0 && !visited[nx][ny]) {
-                visited[x][y] = true;
+                visited[nx][ny] = true;
 
-                System.out.printf("%d, %d\n",nx, ny);
-                nonBlindSpot = DFS_visit(nx, ny, type, direction, nonBlindSpot + 1);
+                DFS_visit(nx, ny, type, direction);
             }
         }
-
-        return nonBlindSpot;
     }
 
     public static class Cctv{
