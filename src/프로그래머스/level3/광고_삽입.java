@@ -2,7 +2,7 @@ package 프로그래머스.level3;
 
 public class 광고_삽입 {
     public static void main(String[] args) {
-        String result = solution("02:03:55", "00:14:15", new String[]{"01:20:15-01:45:14", "00:40:31-01:00:00", "00:25:50-00:48:29", "01:30:59-01:53:29", "01:37:44-02:02:30"});
+        String result = solution("25:00:00", "00:01:00", new String[]{"24:00:01-25:00:00"});
 
         System.out.println(result);
     }
@@ -29,9 +29,10 @@ public class 광고_삽입 {
         int max = 0;
         int maxIndex = 0;
 
-        for(int i = 0; i < playTimeInt - advTimeInt; i++){
-            if(sumTime[advTimeInt + i] - sumTime[i] > max){
-                max = sumTime[advTimeInt + i] - sumTime[i];
+        for(int i = 1; i < playTimeInt - advTimeInt; i++){
+            int viewer = sumTime[advTimeInt + i] - sumTime[i - 1];
+            if(viewer > max){
+                max = viewer;
                 maxIndex = i;
             }
         }
@@ -49,15 +50,11 @@ public class 광고_삽입 {
     }
 
     public static String timeToString(int time){
-        StringBuilder hour = new StringBuilder(String.valueOf(time / 3600));
-        time = time / 3600;
-        StringBuilder minute = new StringBuilder(String.valueOf(time / 60));
-        StringBuilder seconds = new StringBuilder(String.valueOf(time % 60));
+        int hour = time / 3600;
+        time = time % 3600;
+        int minute = time / 60;
+        int seconds = time % 60;
 
-        if(hour.length() == 1) hour.insert(0, 0);
-        if(minute.length() == 1) minute.insert(0, 0);
-        if(seconds.length() == 1) seconds.insert(0, 0);
-
-        return hour + ":" + minute + ":" + seconds;
+        return String.format("%02d:%02d:%02d",hour, minute, seconds);
     }
 }
